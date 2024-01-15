@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    command: uvicorn app.main:app --reload --workers 1 --host 127.0.0.1 --port 8000
+    volumes:
+      - .:/code/
+    ports:
+      - 8000:8000
+    environment:
+      - DATABASE_URL=postgresql://postgres:12345@db/products_shop
+
+  db:
+    image: postgres:12.1-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/postgres_data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=products_shop
+
